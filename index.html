@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Aplikasi Cuaca & Geocoding MapTiler API - Tugas Pemrograman Web Service (PWS) NIM ...217" />
+  <title>Weather & Geo Explorer - MapTiler API (NIM 217)</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="theme-slate">
+  <!-- Background Glow & Particles -->
+  <div class="bg-mesh"></div>
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="brand-section">
+        <div class="brand-logo">
+          <i class="fa-solid fa-cloud-sun-rain"></i>
+        </div>
+        <div class="brand-text">
+          <h1>GeoWeather <span>Explorer</span></h1>
+          <p class="subtitle">Integrasi MapTiler Geocoding & Live Weather API</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div class="nim-badge" title="Identitas Mahasiswa">
+          <span class="badge-dot"></span>
+          <span class="badge-text"><i class="fa-solid fa-id-card"></i> NIM: <strong>217</strong></span>
+        </div>
+        <button id="btnApiModal" class="btn-glass" title="Konfigurasi API Key MapTiler">
+          <i class="fa-solid fa-key"></i>
+          <span>API Key</span>
+        </button>
+        <button id="btnPostmanModal" class="btn-glass" title="Lihat Data JSON / Postman">
+          <i class="fa-solid fa-network-wired"></i>
+          <span>API Inspector</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Search & Quick Selection -->
+    <section class="search-section">
+      <form id="searchForm" class="search-box-container" onsubmit="return false;">
+        <div class="search-input-wrapper">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input 
+            type="text" 
+            id="locationInput" 
+            placeholder="Cari lokasi: nama kecamatan, kota, provinsi, atau negara (contoh: Kebayoran Baru, Sleman, Bandung)..." 
+            autocomplete="off"
+            required
+          />
+          <button type="button" id="btnClearSearch" class="btn-clear" title="Bersihkan input">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <button type="submit" id="btnSearch" class="btn-primary">
+          <i class="fa-solid fa-search"></i>
+          <span>Cari Lokasi</span>
+        </button>
+        <button type="button" id="btnGeolocation" class="btn-secondary" title="Gunakan Lokasi Saat Ini (GPS)">
+          <i class="fa-solid fa-location-crosshairs"></i>
+          <span>GPS Saya</span>
+        </button>
+      </form>
+
+      <!-- Autocomplete Dropdown -->
+      <div id="searchSuggestions" class="search-suggestions hidden"></div>
+
+      <!-- Quick Location Pills -->
+      <div class="quick-locations">
+        <span class="quick-label"><i class="fa-solid fa-fire"></i> Populer:</span>
+        <button class="pill-btn" data-query="Kebayoran Baru">Kebayoran Baru</button>
+        <button class="pill-btn" data-query="Sleman">Sleman</button>
+        <button class="pill-btn" data-query="Coblong, Bandung">Coblong (Bandung)</button>
+        <button class="pill-btn" data-query="Yogyakarta">Yogyakarta</button>
+        <button class="pill-btn" data-query="Surabaya">Surabaya</button>
+        <button class="pill-btn" data-query="Denpasar, Bali">Denpasar</button>
+        <button class="pill-btn" data-query="Tokyo">Tokyo</button>
+        <button class="pill-btn" data-query="London">London</button>
+      </div>
+    </section>
+
+    <!-- Main Content Grid -->
+    <main class="main-grid">
+      <!-- Left Column: Required Geocoding Data & Weather Detail Cards -->
+      <div class="left-column">
+        
+        <!-- REQUIRED TASK SECTION: 6 Mandatory Data Fields -->
+        <section class="card glass-card required-data-section">
+          <div class="card-header">
+            <div class="card-title-group">
+              <div class="icon-bubble pulse-animation">
+                <i class="fa-solid fa-map-location-dot"></i>
+              </div>
+              <div>
+                <h2>Hasil Data Geocoding (MapTiler API)</h2>
+                <p class="card-desc">Ekstraksi parameter data wajib sesuai spesifikasi tugas</p>
+              </div>
+            </div>
+            <span class="status-badge" id="apiStatusBadge">
+              <i class="fa-solid fa-circle-check"></i> Siap
+            </span>
+          </div>
+
+          <!-- 6 Mandatory Parameters Grid -->
+          <div class="required-grid">
+            <!-- 1. Lokasi Input -->
+            <div class="data-field-card highlight-field">
+              <div class="field-icon"><i class="fa-solid fa-location-dot"></i></div>
+              <div class="field-content">
+                <span class="field-label">1. Lokasi (Input)</span>
+                <span class="field-value" id="resLokasiInput">-</span>
+                <span class="field-sub" id="resFormattedAddress">Masukkan pencarian lokasi</span>
+              </div>
+            </div>
+
+            <!-- 2. Negara -->
+            <div class="data-field-card">
+              <div class="field-icon flag-icon"><i class="fa-solid fa-earth-asia"></i></div>
+              <div class="field-content">
+                <span class="field-label">2. Negara</span>
+                <span class="field-value" id="resNegara">-</span>
+                <span class="field-sub" id="resKodeNegara">Kode: -</span>
+              </div>
+            </div>
+
+            <!-- 3. Provinsi -->
+            <div class="data-field-card">
+              <div class="field-icon"><i class="fa-solid fa-landmark"></i></div>
+              <div class="field-content">
+                <span class="field-label">3. Provinsi / Wilayah</span>
+                <span class="field-value" id="resProvinsi">-</span>
+                <span class="field-sub">Tingkat Administratif 1</span>
+              </div>
+            </div>
+
+            <!-- 4. Kecamatan -->
+            <div class="data-field-card">
+              <div class="field-icon"><i class="fa-solid fa-city"></i></div>
+              <div class="field-content">
+                <span class="field-label">4. Kecamatan / Distrik</span>
+                <span class="field-value" id="resKecamatan">-</span>
+                <span class="field-sub">Tingkat Administratif 2/3</span>
+              </div>
+            </div>
+
+            <!-- 5. Longitude -->
+            <div class="data-field-card coord-field">
+              <div class="field-icon"><i class="fa-solid fa-arrows-left-right"></i></div>
+              <div class="field-content">
+                <span class="field-label">5. Longitude (Bujur)</span>
+                <div class="coord-copy-row">
+                  <span class="field-value mono" id="resLongitude">-</span>
+                  <button class="btn-copy" onclick="copyText('resLongitude')" title="Salin Longitude">
+                    <i class="fa-regular fa-copy"></i>
+                  </button>
+                </div>
+                <span class="field-sub">Koordinat Sumbu X</span>
+              </div>
+            </div>
+
+            <!-- 6. Latitude -->
+            <div class="data-field-card coord-field">
+              <div class="field-icon"><i class="fa-solid fa-arrows-up-down"></i></div>
+              <div class="field-content">
+                <span class="field-label">6. Latitude (Lintang)</span>
+                <div class="coord-copy-row">
+                  <span class="field-value mono" id="resLatitude">-</span>
+                  <button class="btn-copy" onclick="copyText('resLatitude')" title="Salin Latitude">
+                    <i class="fa-regular fa-copy"></i>
+                  </button>
+                </div>
+                <span class="field-sub">Koordinat Sumbu Y</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Current Weather Overview Hero Card -->
+        <section class="card glass-card weather-hero-section" id="weatherHeroCard">
+          <div class="weather-hero-content">
+            <div class="weather-main-info">
+              <div class="weather-time" id="weatherLocalTime">Waktu Lokal: --:--</div>
+              <div class="weather-temp-row">
+                <span class="temp-number" id="weatherTemp">--</span>
+                <span class="temp-unit">°C</span>
+              </div>
+              <div class="weather-condition" id="weatherCondition">Memuat data cuaca...</div>
+              <div class="weather-feels-like" id="weatherFeelsLike">Terasa seperti: --°C</div>
+            </div>
+
+            <div class="weather-visual">
+              <div class="weather-anim-icon" id="weatherIconContainer">
+                <i class="fa-solid fa-cloud-sun"></i>
+              </div>
+              <div class="weather-high-low" id="weatherHighLow">
+                <span><i class="fa-solid fa-arrow-up"></i> Max: --°</span>
+                <span><i class="fa-solid fa-arrow-down"></i> Min: --°</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Weather Metric Badges -->
+          <div class="metrics-grid">
+            <div class="metric-item">
+              <i class="fa-solid fa-droplet"></i>
+              <div>
+                <span class="metric-label">Kelembapan</span>
+                <span class="metric-value" id="metricHumidity">--%</span>
+              </div>
+            </div>
+            <div class="metric-item">
+              <i class="fa-solid fa-wind"></i>
+              <div>
+                <span class="metric-label">Kecepatan Angin</span>
+                <span class="metric-value" id="metricWind">-- km/h</span>
+              </div>
+            </div>
+            <div class="metric-item">
+              <i class="fa-solid fa-sun"></i>
+              <div>
+                <span class="metric-label">Indeks UV</span>
+                <span class="metric-value" id="metricUV">--</span>
+              </div>
+            </div>
+            <div class="metric-item">
+              <i class="fa-solid fa-gauge-high"></i>
+              <div>
+                <span class="metric-label">Tekanan Udara</span>
+                <span class="metric-value" id="metricPressure">-- hPa</span>
+              </div>
+            </div>
+            <div class="metric-item">
+              <i class="fa-solid fa-eye"></i>
+              <div>
+                <span class="metric-label">Jarak Pandang</span>
+                <span class="metric-value" id="metricVisibility">-- km</span>
+              </div>
+            </div>
+            <div class="metric-item">
+              <i class="fa-solid fa-cloud-rain"></i>
+              <div>
+                <span class="metric-label">Peluang Hujan</span>
+                <span class="metric-value" id="metricRainChance">--%</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 24-Hour Forecast Slider -->
+        <section class="card glass-card hourly-section">
+          <div class="section-title-sm">
+            <i class="fa-regular fa-clock"></i>
+            <h3>Prakiraan Cuaca Tiap Jam (24 Jam)</h3>
+          </div>
+          <div class="hourly-slider" id="hourlyForecastContainer">
+            <!-- Dynamically populated via JS -->
+            <div class="loading-state">Memuat prakiraan per jam...</div>
+          </div>
+        </section>
+
+        <!-- 7-Day Forecast Section -->
+        <section class="card glass-card daily-section">
+          <div class="section-title-sm">
+            <i class="fa-regular fa-calendar-days"></i>
+            <h3>Prakiraan 7 Hari Ke Depan</h3>
+          </div>
+          <div class="daily-list" id="dailyForecastContainer">
+            <!-- Dynamically populated via JS -->
+            <div class="loading-state">Memuat prakiraan 7 hari...</div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right Column: Interactive Map & Live Geolocation Control -->
+      <div class="right-column">
+        <!-- Interactive Map Container -->
+        <section class="card glass-card map-card">
+          <div class="map-card-header">
+            <div class="card-title-group">
+              <div class="icon-bubble">
+                <i class="fa-solid fa-layer-group"></i>
+              </div>
+              <div>
+                <h3>Peta Interaktif MapTiler</h3>
+                <p class="card-desc">Klik di mana saja pada peta untuk reverse-geocoding</p>
+              </div>
+            </div>
+            <div class="map-layer-selector">
+              <select id="mapStyleSelect" class="select-glass" title="Pilih gaya peta">
+                <option value="streets-v2">Streets MapTiler</option>
+                <option value="satellite">Satelit MapTiler</option>
+                <option value="topo-v2">Topografi MapTiler</option>
+                <option value="backdrop">Dark / Night</option>
+                <option value="osm">OpenStreetMap</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="map" class="interactive-map"></div>
+
+          <div class="map-footer-info">
+            <span><i class="fa-solid fa-hand-pointer"></i> <strong>Tip:</strong> Geser peta atau klik pin lokasi untuk memperbarui cuaca secara real-time.</span>
+          </div>
+        </section>
+
+        <!-- Sun Trajectory & Day Info Card -->
+        <section class="card glass-card sun-info-card">
+          <div class="section-title-sm">
+            <i class="fa-solid fa-sun"></i>
+            <h3>Siklus Matahari & Waktu</h3>
+          </div>
+          <div class="sun-cycle-container">
+            <div class="sun-item">
+              <i class="fa-solid fa-mountain-sun sunrise-icon"></i>
+              <div>
+                <span class="sun-label">Matahari Terbit</span>
+                <span class="sun-time" id="sunSunrise">--:-- WIB</span>
+              </div>
+            </div>
+            <div class="sun-divider">
+              <div class="sun-arc-line"></div>
+            </div>
+            <div class="sun-item">
+              <i class="fa-solid fa-sunset sunset-icon"></i>
+              <div>
+                <span class="sun-label">Matahari Terbenam</span>
+                <span class="sun-time" id="sunSunset">--:-- WIB</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- API Request Info Box (Postman & Grading Helper) -->
+        <section class="card glass-card api-helper-card">
+          <div class="section-title-sm">
+            <i class="fa-solid fa-code"></i>
+            <h3>Endpoint MapTiler API Aktif</h3>
+          </div>
+          <div class="endpoint-box">
+            <span class="method-tag">GET</span>
+            <code id="activeEndpointUrl" class="endpoint-url">https://api.maptiler.com/geocoding/...</code>
+          </div>
+          <div class="api-helper-actions">
+            <button class="btn-sm-glass" onclick="openInspectorModal()">
+              <i class="fa-solid fa-terminal"></i> Buka Raw JSON Inspector
+            </button>
+            <button class="btn-sm-glass" onclick="copyActiveEndpoint()">
+              <i class="fa-regular fa-copy"></i> Salin URL untuk Postman
+            </button>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>Tugas Pemrograman Web Service &copy; 2026 | Dibuat dengan HTML, CSS & JavaScript</p>
+      <p class="footer-sub">Repository: <code>217_WeatherApi</code> | 3 Digit NIM Belakang: <strong>217</strong> | Powered by MapTiler & Open-Meteo API</p>
+    </footer>
+  </div>
+
+  <!-- Modal: API Key Settings -->
+  <div id="apiKeyModal" class="modal-overlay hidden">
+    <div class="modal-box glass-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-key"></i> Pengaturan API Key MapTiler</h3>
+        <button class="btn-close-modal" id="btnCloseApiModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-desc">
+          Masukkan API Key dari akun <a href="https://cloud.maptiler.com/account/keys/" target="_blank" rel="noopener">MapTiler Cloud</a> kamu. Key akan disimpan di localStorage browser secara aman.
+        </p>
+        <div class="input-group">
+          <label for="inputApiKey">MapTiler API Key:</label>
+          <input type="text" id="inputApiKey" placeholder="Contoh: aBcDeFgHiJkLmNoPqRsT" />
+        </div>
+        <div class="modal-tip">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>Jika kosong, aplikasi akan menggunakan mode demonstrasi / fallback open geocoding otomatis.</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="btnResetApiKey">Gunakan Default</button>
+        <button class="btn-primary" id="btnSaveApiKey">Simpan Key</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: API Inspector / Postman Data Viewer -->
+  <div id="inspectorModal" class="modal-overlay hidden">
+    <div class="modal-box modal-lg glass-card">
+      <div class="modal-header">
+        <div class="modal-header-tabs">
+          <h3><i class="fa-solid fa-network-wired"></i> API Inspector & Postman Assistant</h3>
+        </div>
+        <button class="btn-close-modal" id="btnCloseInspectorModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="inspector-tabs">
+          <button class="tab-btn active" data-tab="tab-geocoding">MapTiler Geocoding JSON</button>
+          <button class="tab-btn" data-tab="tab-weather">Weather Data JSON</button>
+          <button class="tab-btn" data-tab="tab-postman">Panduan Screenshot Postman</button>
+        </div>
+
+        <!-- Tab 1: MapTiler Geocoding Raw JSON -->
+        <div id="tab-geocoding" class="tab-content active">
+          <div class="code-header-bar">
+            <span class="code-title"><i class="fa-solid fa-code"></i> MapTiler Geocoding Response (JSON)</span>
+            <button class="btn-copy-code" onclick="copyJson('rawGeocodingJson')">
+              <i class="fa-regular fa-copy"></i> Salin JSON
+            </button>
+          </div>
+          <pre><code id="rawGeocodingJson" class="json-code">// Menunggu request data lokasi...</code></pre>
+        </div>
+
+        <!-- Tab 2: Weather Raw JSON -->
+        <div id="tab-weather" class="tab-content">
+          <div class="code-header-bar">
+            <span class="code-title"><i class="fa-solid fa-cloud"></i> Open-Meteo Weather Response (JSON)</span>
+            <button class="btn-copy-code" onclick="copyJson('rawWeatherJson')">
+              <i class="fa-regular fa-copy"></i> Salin JSON
+            </button>
+          </div>
+          <pre><code id="rawWeatherJson" class="json-code">// Menunggu request data cuaca...</code></pre>
+        </div>
+
+        <!-- Tab 3: Postman Instructions & Screenshot Guide -->
+        <div id="tab-postman" class="tab-content">
+          <div class="postman-guide">
+            <h4><i class="fa-solid fa-camera"></i> Langkah Mengambil Screenshot Postman untuk Tugas:</h4>
+            <ol class="guide-steps">
+              <li>Buka aplikasi <strong>Postman</strong> di laptop kamu.</li>
+              <li>Pilih method <strong>GET</strong>.</li>
+              <li>Masukkan URL API Geocoding:
+                <div class="copy-url-box">
+                  <code id="postmanUrlSample">https://api.maptiler.com/geocoding/Kebayoran%20Baru.json?key=YOUR_KEY&language=id</code>
+                  <button class="btn-copy-sm" onclick="copyPostmanUrl()"><i class="fa-regular fa-copy"></i></button>
+                </div>
+              </li>
+              <li>Klik tombol <strong>Send</strong>.</li>
+              <li>Pastikan respons berstatus <code>200 OK</code> dan menampilkan data <code>place_name</code>, <code>context</code> (negara, provinsi, kecamatan), dan <code>geometry.coordinates</code> (longitude, latitude).</li>
+              <li>Ambil Screenshot layar Postman dan simpan sebagai <code>postman_screenshot.png</code> untuk dimasukkan ke <code>README.md</code>.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <!-- Custom Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
