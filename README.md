@@ -18,12 +18,32 @@ Sesuai dengan ketentuan tugas, aplikasi mengekstrak dan menampilkan 6 parameter 
 
 | No | Parameter Data | Deskripsi | Contoh Output |
 |:---|:---|:---|:---|
-| 1 | **Lokasi: `<Input>`** | Nama lokasi yang dicari / dipilih pengguna | `Kebayoran Baru` |
+| 1 | **Lokasi: `<Input>`** | Nama lokasi yang dicari / dipilih pengguna | `Tanjung Selor` / `Sleman` |
 | 2 | **Negara** | Nama negara hasil geocoding | `Indonesia` (ID) |
-| 3 | **Provinsi** | Wilayah administratif tingkat 1 | `Daerah Khusus Ibukota Jakarta` |
-| 4 | **Kecamatan** | Wilayah administratif tingkat 2/3 (Distrik/Kecamatan) | `Kebayoran Baru` |
-| 5 | **Longitude** | Koordinat garis bujur (Sumbu X) | `106.797232° E` |
-| 6 | **Latitude** | Koordinat garis lintang (Sumbu Y) | `-6.249779° S` |
+| 3 | **Provinsi** | Wilayah administratif tingkat 1 | `Kalimantan Utara` / `D.I. Yogyakarta` |
+| 4 | **Kecamatan** | Wilayah administratif tingkat 2/3 (Distrik/Kecamatan) | `Kabupaten Bulungan` / `Sleman` |
+| 5 | **Longitude** | Koordinat garis bujur (Sumbu X) | `117.365280° E` |
+| 6 | **Latitude** | Koordinat garis lintang (Sumbu Y) | `2.837500° N` |
+
+---
+
+## 📸 Bukti Hasil Data GET (Screenshots)
+
+### 1. Screenshot Hasil Data GET di Browser
+> *Antarmuka GeoWeather Explorer menampilkan ke-6 data wajib (Lokasi, Negara, Provinsi, Kecamatan, Longitude, Latitude) serta peta interaktif.*
+
+#### 📍 Pengujian Lokasi: Tanjung Selor
+![Browser Screenshot - Tanjung Selor](screenshots/Screenshot%202026-09-29%20101213.png)
+
+#### 📍 Pengujian Lokasi: Sleman
+![Browser Screenshot - Sleman](screenshots/Screenshot%202026-09-29%20100306.png)
+
+---
+
+### 2. Screenshot Hasil Data GET di Postman
+> *Pengujian request GET ke endpoint Geocoding API melalui Postman dengan respons status `200 OK`.*
+
+![Postman Screenshot](screenshots/Screenshot%202026-09-29%20102220.png)
 
 ---
 
@@ -47,38 +67,18 @@ Sesuai dengan ketentuan tugas, aplikasi mengekstrak dan menampilkan 6 parameter 
 
 ---
 
-## 📸 Bukti Hasil Data GET (Screenshots)
-
-### 1. Screenshot Hasil Data GET di Browser
-> *Antarmuka GeoWeather Explorer menampilkan ke-6 data wajib (Lokasi, Negara, Provinsi, Kecamatan, Longitude, Latitude) dan peta interaktif.*
-
-![Browser Screenshot - Sleman](screenshots/Screenshot%202026-09-29%20100306.png)
-![Browser Screenshot - Tanjung Selor](screenshots/Screenshot%202026-09-29%20101213.png)
-
----
-
-### 2. Screenshot Hasil Data GET di Postman
-> *Pengujian request GET ke endpoint Geocoding API melalui Postman dengan respons status `200 OK`.*
-
-![Postman Screenshot](screenshots/Screenshot%202026-09-29%20102220.png)
-
----
-
 ## 🛠️ Endpoint API yang Digunakan
 
-### 1. MapTiler Geocoding API (Direct Search)
+### 1. Geocoding API (Direct Search)
 - **Method:** `GET`
-- **URL:** `https://api.maptiler.com/geocoding/{query}.json?key={YOUR_API_KEY}&language=id`
-- **Parameter:**
-  - `{query}`: Nama lokasi pencarian (contoh: `Kebayoran Baru`, `Sleman`, dll.)
-  - `key`: API Key MapTiler
-  - `language`: `id` (Bahasa Indonesia)
+- **URL:** `https://geocoding-api.open-meteo.com/v1/search?name={query}&count=1&language=id`
+- **URL MapTiler Alternatif:** `https://api.maptiler.com/geocoding/{query}.json?key={API_KEY}&language=id`
 
-### 2. MapTiler Reverse Geocoding API (Peta / GPS)
+### 2. Reverse Geocoding API (Peta / GPS)
 - **Method:** `GET`
-- **URL:** `https://api.maptiler.com/geocoding/{longitude},{latitude}.json?key={YOUR_API_KEY}&language=id`
+- **URL:** `https://api.maptiler.com/geocoding/{longitude},{latitude}.json?key={API_KEY}&language=id`
 
-### 3. Open-Meteo Weather Forecast API
+### 3. Weather Forecast API
 - **Method:** `GET`
 - **URL:** `https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max&timezone=auto`
 
@@ -94,9 +94,11 @@ Sesuai dengan ketentuan tugas, aplikasi mengekstrak dan menampilkan 6 parameter 
 
 ### 2. Menggunakan Postman untuk Pengujian API
 1. Buka aplikasi **Postman**.
-2. Klik tombol **Import** di kiri atas -> Pilih file [`postman_collection.json`](postman_collection.json).
-3. Jalankan request **"1. MapTiler Geocoding - Cari Lokasi (Kebayoran Baru)"**.
-4. Ambil screenshot layar Postman untuk dokumentasi.
+2. Masukkan URL:
+   ```text
+   https://geocoding-api.open-meteo.com/v1/search?name=Kebayoran%20Baru&count=1&language=id
+   ```
+3. Klik **Send** (respons berstatus `200 OK` dan data JSON muncul).
 
 ---
 
@@ -108,20 +110,12 @@ Sesuai dengan ketentuan tugas, aplikasi mengekstrak dan menampilkan 6 parameter 
 ├── app.js                   # Logika integrasi API, parsing data, peta Leaflet & cuaca
 ├── postman_collection.json  # File koleksi request Postman
 ├── README.md                # Dokumentasi lengkap tugas
-└── screenshots/             # Folder penyimpanan screenshot browser & Postman
-    ├── browser_screenshot.png
-    └── postman_screenshot.png
+└── screenshots/             # Folder penyimpanan screenshot bukti pengujian
+    ├── README.md            # Dokumentasi screenshot
+    ├── Screenshot 2026-09-29 101213.png
+    ├── Screenshot 2026-09-29 100306.png
+    └── Screenshot 2026-09-29 102220.png
 ```
-
----
-
-## 💡 Ekstensi VS Code yang Direkomendasikan
-Untuk pengalaman pengembangan dan pengujian terbaik, pasang ekstensi berikut di VS Code:
-1. **Live Server** (`ritwickdey.liveserver`) – Menjalankan local development server dengan hot reload otomatis.
-2. **Postman** (`Postman.postman-for-vscode`) atau **Thunder Client** – Melakukan pengujian API langsung di dalam editor.
-3. **GitLens** (`eamodio.gitlens`) & **Git Graph** – Memantau riwayat dan visualisasi commit Git.
-4. **Prettier - Code Formatter** (`esbenp.prettier-vscode`) – Merapikan format kode secara otomatis.
-5. **HTML CSS Support** & **Auto Rename Tag** – Mempercepat penulisan tag HTML dan selector CSS.
 
 ---
 
@@ -130,8 +124,9 @@ Untuk pengalaman pengembangan dan pengujian terbaik, pasang ekstensi berikut di 
 2. `feat: implement modern glassmorphism UI design system and responsive styles`
 3. `feat: implement MapTiler geocoding API integration and location extraction (country, province, district, coordinates)`
 4. `feat: add postman collection for API testing and grading verification`
-5. `feat: add screenshots directory and placeholder guides`
-6. `docs: add comprehensive README.md with NIM 217 details, API documentation, and screenshot guidelines`
+5. `feat: setup screenshots directory and submission guidelines`
+6. `docs: add comprehensive README documentation with NIM 217 details, API endpoints, and setup guide`
+7. `docs: add browser and postman verification screenshots to README`
 
 ---
 

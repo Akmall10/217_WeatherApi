@@ -1,16 +1,18 @@
-# 📸 Bukti Tangkapan Layar (Screenshots)
+# 📸 Dokumentasi Tangkapan Layar (Screenshots)
 
-Berikut adalah dokumentasi tangkapan layar pengujian antarmuka web dan request API:
-
-### 1. Antarmuka Web Browser
-Menampilkan ke-6 parameter data wajib (Lokasi, Negara, Provinsi, Kecamatan, Longitude, Latitude) serta peta interaktif:
-* **Hasil Pengujian Lokasi Sleman:**  
-  ![Browser Screenshot - Sleman](Screenshot%202026-09-29%20100306.png)
-* **Hasil Pengujian Lokasi Tanjung Selor:**  
-  ![Browser Screenshot - Tanjung Selor](Screenshot%202026-09-29%20101213.png)
+Folder ini memuat seluruh bukti hasil pengujian antarmuka aplikasi web dan request API pada project **217_WeatherApi**:
 
 ---
 
-### 2. Pengujian Request GET di Postman
-Menampilkan respons berstatus `200 OK` dan data JSON:
-![Postman Screenshot](Screenshot%202026-09-29%20102220.png)
+### 1. Bukti Antarmuka Web Browser (6 Parameter Wajib)
+* **Pengujian Lokasi Tanjung Selor (Kalimantan Utara):**  
+  ![Browser Screenshot - Tanjung Selor](Screenshot%202026-09-29%20101213.png)
+
+* **Pengujian Lokasi Sleman (D.I. Yogyakarta):**  
+  ![Browser Screenshot - Sleman](Screenshot%202026-09-29%20100306.png)
+
+---
+
+### 2. Bukti Pengujian Request GET di Postman
+* **Pengujian Endpoint Geocoding API:**  
+  ![Postman Screenshot](Screenshot%202026-09-29%20102220.png)
