@@ -52,18 +52,15 @@ Sesuai dengan ketentuan tugas, aplikasi mengekstrak dan menampilkan 6 parameter 
 ### 1. Screenshot Hasil Data GET di Browser
 > *Antarmuka GeoWeather Explorer menampilkan ke-6 data wajib (Lokasi, Negara, Provinsi, Kecamatan, Longitude, Latitude) dan peta interaktif.*
 
-![Browser Screenshot](screenshots/browser_screenshot.png)
-
-*(Ganti file `screenshots/browser_screenshot.png` dengan screenshot layar browser kamu)*
+![Browser Screenshot - Sleman](screenshots/Screenshot%202026-09-29%20100306.png)
+![Browser Screenshot - Tanjung Selor](screenshots/Screenshot%202026-09-29%20101213.png)
 
 ---
 
 ### 2. Screenshot Hasil Data GET di Postman
-> *Pengujian request GET ke endpoint MapTiler Geocoding API melalui Postman dengan respons status `200 OK`.*
+> *Pengujian request GET ke endpoint Geocoding API melalui Postman dengan respons status `200 OK`.*
 
-![Postman Screenshot](screenshots/postman_screenshot.png)
-
-*(Ganti file `screenshots/postman_screenshot.png` dengan screenshot aplikasi Postman kamu)*
+![Postman Screenshot](screenshots/Screenshot%202026-09-29%20102220.png)
 
 ---
 
