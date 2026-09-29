@@ -487,52 +487,71 @@ body {
 }
 
 /* ==========================================================================
-   Dashboard Main Layout (Structured Rows)
+   Dashboard Main Layout (Structured & Responsive Rows)
    ========================================================================== */
 .dashboard-layout {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 22px;
 }
 
-/* Row 1: 6 Required Data Fields (Left) & Interactive Map (Right) */
-.top-geo-row {
+/* Base Grid Row */
+.grid-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  gap: 22px;
   align-items: stretch;
 }
 
-.top-geo-row .map-card {
+/* Row 1: 6 Required Data Fields (Left) & Interactive Map (Right) */
+.row-geo {
+  grid-template-columns: 1.15fr 0.85fr;
+}
+
+.row-geo .required-data-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.row-geo .map-card {
   display: flex;
   flex-direction: column;
 }
 
-.top-geo-row .interactive-map {
+.row-geo .interactive-map {
   flex: 1;
-  min-height: 360px;
+  min-height: 320px;
+  width: 100%;
 }
 
-/* Row 2: Live Weather Hero & Hourly Forecast */
-.middle-weather-row {
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  gap: 24px;
-  align-items: stretch;
+/* Row 2: Live Weather Hero (Left) & 24-Hour Forecast (Right) */
+.row-weather {
+  grid-template-columns: 1.05fr 0.95fr;
 }
 
-/* Row 3: 7-Day Forecast & Sidebar */
-.bottom-forecast-row {
-  display: grid;
+.row-weather .weather-hero-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.row-weather .hourly-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Row 3: 7-Day Forecast (Left) & Sidebar (Right) */
+.row-bottom {
   grid-template-columns: 1.15fr 0.85fr;
-  gap: 24px;
   align-items: start;
 }
 
 .bottom-sidebar {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 22px;
 }
 
 /* Card Headers */
@@ -715,26 +734,34 @@ body {
 }
 
 /* ==========================================================================
-   Weather Hero Section
+   Weather Hero Section & Metrics Cards
    ========================================================================== */
 .weather-hero-section {
-  background: linear-gradient(135deg, rgba(30, 58, 138, 0.35) 0%, rgba(15, 23, 42, 0.7) 100%);
+  background: linear-gradient(135deg, rgba(30, 58, 138, 0.4) 0%, rgba(15, 23, 42, 0.75) 100%);
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .weather-hero-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  gap: 16px;
+}
+
+.weather-main-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .weather-time {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: var(--accent-cyan);
   font-weight: 600;
-  margin-bottom: 4px;
 }
 
 .weather-temp-row {
@@ -764,7 +791,6 @@ body {
   font-size: 1.15rem;
   font-weight: 600;
   color: var(--text-main);
-  margin-top: 4px;
 }
 
 .weather-feels-like {
@@ -777,6 +803,7 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .weather-anim-icon {
@@ -798,23 +825,49 @@ body {
   color: var(--text-muted);
 }
 
-/* Metrics Grid */
+/* Metrics Card & Grid */
+.metrics-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .metrics-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
-  padding-top: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .metric-item {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 12px;
+  padding: 12px 14px;
   background: rgba(255, 255, 255, 0.03);
   border-radius: var(--radius-md);
   border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.metric-item i {
+  font-size: 1.2rem;
+  color: var(--accent-cyan);
+}
+
+.metric-label {
+  display: block;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+}
+
+.metric-value {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* Full-Width 24-Hour Hourly Forecast */
+.full-hourly-section {
+  width: 100%;
 }
 
 .metric-item i {
@@ -1504,10 +1557,8 @@ body {
    Responsive Breakpoints
    ========================================================================== */
 @media (max-width: 1024px) {
-  .top-geo-row,
-  .middle-weather-row,
-  .bottom-forecast-row {
-    grid-template-columns: 1fr;
+  .grid-row {
+    grid-template-columns: 1fr !important;
   }
 }
 

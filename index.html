@@ -99,10 +99,10 @@
       </div>
     </section>
 
-    <!-- Main Content Grid -->
+    <!-- Main Content Dashboard Layout -->
     <main class="dashboard-layout">
-      <!-- TOP ROW: 6 Required Data Fields (Left) & Interactive Map (Right) -->
-      <section class="top-geo-row">
+      <!-- ROW 1: Geocoding Data (Left) & Interactive Map (Right) -->
+      <section class="grid-row row-geo">
         <!-- REQUIRED TASK SECTION: 6 Mandatory Data Fields -->
         <div class="card glass-card required-data-section">
           <div class="card-header">
@@ -225,9 +225,9 @@
         </div>
       </section>
 
-      <!-- MIDDLE ROW: Live Weather Hero & Hourly Forecast -->
-      <section class="middle-weather-row">
-        <!-- Current Weather Overview Hero Card -->
+      <!-- ROW 2: Live Weather Overview (Left) & Weather Metrics (Right) -->
+      <section class="grid-row row-weather">
+        <!-- Weather Overview Card -->
         <div class="card glass-card weather-hero-section" id="weatherHeroCard">
           <div class="weather-hero-content">
             <div class="weather-main-info">
@@ -250,8 +250,14 @@
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- Weather Metric Badges -->
+        <!-- Weather Metrics Grid Card -->
+        <div class="card glass-card metrics-card">
+          <div class="section-title-sm">
+            <i class="fa-solid fa-chart-simple"></i>
+            <h3>Parameter & Metrik Cuaca</h3>
+          </div>
           <div class="metrics-grid">
             <div class="metric-item">
               <i class="fa-solid fa-droplet"></i>
@@ -297,21 +303,21 @@
             </div>
           </div>
         </div>
+      </section>
 
-        <!-- 24-Hour Forecast Slider -->
-        <div class="card glass-card hourly-section">
-          <div class="section-title-sm">
-            <i class="fa-regular fa-clock"></i>
-            <h3>Prakiraan Cuaca Tiap Jam (24 Jam)</h3>
-          </div>
-          <div class="hourly-slider" id="hourlyForecastContainer">
-            <div class="loading-state">Memuat prakiraan per jam...</div>
-          </div>
+      <!-- ROW 3: Full-Width 24-Hour Forecast Slider -->
+      <section class="card glass-card full-hourly-section">
+        <div class="section-title-sm">
+          <i class="fa-regular fa-clock"></i>
+          <h3>Prakiraan Cuaca Tiap Jam (24 Jam)</h3>
+        </div>
+        <div class="hourly-slider" id="hourlyForecastContainer">
+          <div class="loading-state">Memuat prakiraan per jam...</div>
         </div>
       </section>
 
-      <!-- BOTTOM ROW: 7-Day Forecast, Sun Info & API Endpoint Box -->
-      <section class="bottom-forecast-row">
+      <!-- ROW 4: 7-Day Forecast (Left) & Sidebar (Right) -->
+      <section class="grid-row row-bottom">
         <!-- 7-Day Forecast Section -->
         <div class="card glass-card daily-section">
           <div class="section-title-sm">
