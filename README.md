@@ -2,7 +2,7 @@
 
 > **Tugas Praktikum Pemrograman Web Service (PWS)**  
 > **Nama Repository:** `217_WeatherApi`  
-> **Identitas Mahasiswa:** NIM Belakang **217**
+> **Identitas Mahasiswa:** **Akmal Prasetyo**
 
 ---
 
