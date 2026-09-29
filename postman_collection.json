@@ -1,0 +1,112 @@
+{
+  "info": {
+    "_postman_id": "9a38f712-4217-48de-8bf1-e737c35e8217",
+    "name": "217_WeatherApi - MapTiler & Weather API Collection",
+    "description": "Postman Collection untuk Tugas Pemrograman Web Service (PWS) - NIM 217.\nBerisi endpoint MapTiler Geocoding API dan Live Weather Forecast API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. MapTiler Geocoding - Cari Lokasi (Kebayoran Baru)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.maptiler.com/geocoding/Kebayoran%20Baru.json?key={{MAPTILER_KEY}}&language=id",
+          "protocol": "https",
+          "host": [
+            "api",
+            "maptiler",
+            "com"
+          ],
+          "path": [
+            "geocoding",
+            "Kebayoran%20Baru.json"
+          ],
+          "query": [
+            {
+              "key": "key",
+              "value": "{{MAPTILER_KEY}}",
+              "description": "API Key dari https://cloud.maptiler.com/account/keys/"
+            },
+            {
+              "key": "language",
+              "value": "id",
+              "description": "Bahasa Indonesia"
+            }
+          ]
+        },
+        "description": "Endpoint utama untuk mendapatkan detail negara, provinsi, kecamatan, longitude, dan latitude."
+      },
+      "response": []
+    },
+    {
+      "name": "2. MapTiler Reverse Geocoding - Koordinat ke Lokasi",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.maptiler.com/geocoding/106.8046,-6.2428.json?key={{MAPTILER_KEY}}&language=id",
+          "protocol": "https",
+          "host": [
+            "api",
+            "maptiler",
+            "com"
+          ],
+          "path": [
+            "geocoding",
+            "106.8046,-6.2428.json"
+          ],
+          "query": [
+            {
+              "key": "key",
+              "value": "{{MAPTILER_KEY}}"
+            },
+            {
+              "key": "language",
+              "value": "id"
+            }
+          ]
+        },
+        "description": "Reverse geocoding dari Longitude & Latitude ke nama tempat / wilayah."
+      },
+      "response": []
+    },
+    {
+      "name": "3. Open-Meteo Live Weather Forecast API",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.open-meteo.com/v1/forecast?latitude=-6.2428&longitude=106.8046&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,surface_pressure,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max&timezone=auto",
+          "protocol": "https",
+          "host": [
+            "api",
+            "open-meteo",
+            "com"
+          ],
+          "path": [
+            "v1",
+            "forecast"
+          ],
+          "query": [
+            { "key": "latitude", "value": "-6.2428" },
+            { "key": "longitude", "value": "106.8046" },
+            { "key": "current", "value": "temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,surface_pressure,wind_speed_10m" },
+            { "key": "daily", "value": "weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max" },
+            { "key": "timezone", "value": "auto" }
+          ]
+        },
+        "description": "Mengambil parameter cuaca live: suhu, kelembapan, angin, tekanan, UV index, matahari terbit/terbenam."
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "MAPTILER_KEY",
+      "value": "YOUR_MAPTILER_KEY_HERE",
+      "type": "string"
+    }
+  ]
+}
