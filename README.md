@@ -29,21 +29,24 @@ Sesuai dengan ketentuan tugas, aplikasi mengekstrak dan menampilkan 6 parameter 
 
 ## 📸 Bukti Hasil Data GET (Screenshots)
 
-### 1. Screenshot Hasil Data GET di Browser
-> *Antarmuka GeoWeather Explorer menampilkan ke-6 data wajib (Lokasi, Negara, Provinsi, Kecamatan, Longitude, Latitude) serta peta interaktif.*
+### 1. Antarmuka Web Browser (GeoWeather Explorer)
 
-#### 📍 Pengujian Lokasi: Tanjung Selor
-![Browser Screenshot - Tanjung Selor](screenshots/Screenshot%202026-09-29%20101213.png)
+#### 📍 Bagian 1: Hasil Data Geocoding & Peta Interaktif (Tanjung Selor)
+> *Menampilkan lengkap ke-6 parameter data wajib (Lokasi, Negara, Provinsi, Kecamatan, Longitude, Latitude) berdampingan langsung dengan peta interaktif MapTiler.*
 
-#### 📍 Pengujian Lokasi: Sleman
-![Browser Screenshot - Sleman](screenshots/Screenshot%202026-09-29%20100306.png)
+![Browser Screenshot - Geocoding & Peta](screenshots/browser_top.png)
+
+#### 📍 Bagian 2: Live Weather Dashboard & Prakiraan Cuaca 24 Jam
+> *Menampilkan cuaca aktual, parameter metrik cuaca, slider prakiraan 24 jam full-width, prakiraan 7 hari, dan siklus matahari.*
+
+![Browser Screenshot - Live Weather & Forecast](screenshots/browser_bottom.png)
 
 ---
 
-### 2. Screenshot Hasil Data GET di Postman
+### 2. Pengujian Request GET di Postman
 > *Pengujian request GET ke endpoint Geocoding API melalui Postman dengan respons status `200 OK`.*
 
-![Postman Screenshot](screenshots/Screenshot%202026-09-29%20102220.png)
+![Postman Screenshot](screenshots/postman_screenshot.png)
 
 ---
 

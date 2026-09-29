@@ -4,15 +4,18 @@ Folder ini memuat seluruh bukti hasil pengujian antarmuka aplikasi web dan reque
 
 ---
 
-### 1. Bukti Antarmuka Web Browser (6 Parameter Wajib)
-* **Pengujian Lokasi Tanjung Selor (Kalimantan Utara):**  
-  ![Browser Screenshot - Tanjung Selor](Screenshot%202026-09-29%20101213.png)
+### 1. Antarmuka Web Browser (GeoWeather Explorer)
 
-* **Pengujian Lokasi Sleman (D.I. Yogyakarta):**  
-  ![Browser Screenshot - Sleman](Screenshot%202026-09-29%20100306.png)
+* **Bagian 1: Hasil Data Geocoding & Peta Interaktif (Tanjung Selor)**  
+  Menampilkan lengkap 6 Parameter Data Wajib (Lokasi, Negara, Provinsi, Kecamatan, Longitude, Latitude) berdampingan dengan peta interaktif:  
+  ![Browser Screenshot - Bagian 1](browser_top.png)
+
+* **Bagian 2: Live Weather Dashboard & Prakiraan Cuaca 24 Jam**  
+  Menampilkan cuaca aktual, parameter metrik cuaca, slider 24 jam full-width, prakiraan 7 hari, dan siklus matahari:  
+  ![Browser Screenshot - Bagian 2](browser_bottom.png)
 
 ---
 
-### 2. Bukti Pengujian Request GET di Postman
-* **Pengujian Endpoint Geocoding API:**  
-  ![Postman Screenshot](Screenshot%202026-09-29%20102220.png)
+### 2. Pengujian Request GET di Postman
+Menampilkan respons berstatus `200 OK` dan data JSON:  
+![Postman Screenshot](postman_screenshot.png)
