@@ -100,12 +100,11 @@
     </section>
 
     <!-- Main Content Grid -->
-    <main class="main-grid">
-      <!-- Left Column: Required Geocoding Data & Weather Detail Cards -->
-      <div class="left-column">
-        
+    <main class="dashboard-layout">
+      <!-- TOP ROW: 6 Required Data Fields (Left) & Interactive Map (Right) -->
+      <section class="top-geo-row">
         <!-- REQUIRED TASK SECTION: 6 Mandatory Data Fields -->
-        <section class="card glass-card required-data-section">
+        <div class="card glass-card required-data-section">
           <div class="card-header">
             <div class="card-title-group">
               <div class="icon-bubble pulse-animation">
@@ -193,10 +192,43 @@
               </div>
             </div>
           </div>
-        </section>
+        </div>
 
+        <!-- Interactive Map Container (Beside Required Data) -->
+        <div class="card glass-card map-card">
+          <div class="map-card-header">
+            <div class="card-title-group">
+              <div class="icon-bubble">
+                <i class="fa-solid fa-layer-group"></i>
+              </div>
+              <div>
+                <h3>Peta Interaktif MapTiler</h3>
+                <p class="card-desc">Klik pin atau area peta untuk reverse-geocoding</p>
+              </div>
+            </div>
+            <div class="map-layer-selector">
+              <select id="mapStyleSelect" class="select-glass" title="Pilih gaya peta">
+                <option value="streets-v2">Streets MapTiler</option>
+                <option value="satellite">Satelit MapTiler</option>
+                <option value="topo-v2">Topografi MapTiler</option>
+                <option value="backdrop">Dark Mode</option>
+                <option value="osm">OpenStreetMap</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="map" class="interactive-map"></div>
+
+          <div class="map-footer-info">
+            <span><i class="fa-solid fa-hand-pointer"></i> <strong>Peta Aktif:</strong> Klik di mana saja pada peta untuk memperbarui koordinat & cuaca lokasi secara instan.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- MIDDLE ROW: Live Weather Hero & Hourly Forecast -->
+      <section class="middle-weather-row">
         <!-- Current Weather Overview Hero Card -->
-        <section class="card glass-card weather-hero-section" id="weatherHeroCard">
+        <div class="card glass-card weather-hero-section" id="weatherHeroCard">
           <div class="weather-hero-content">
             <div class="weather-main-info">
               <div class="weather-time" id="weatherLocalTime">Waktu Lokal: --:--</div>
@@ -264,112 +296,82 @@
               </div>
             </div>
           </div>
-        </section>
+        </div>
 
         <!-- 24-Hour Forecast Slider -->
-        <section class="card glass-card hourly-section">
+        <div class="card glass-card hourly-section">
           <div class="section-title-sm">
             <i class="fa-regular fa-clock"></i>
             <h3>Prakiraan Cuaca Tiap Jam (24 Jam)</h3>
           </div>
           <div class="hourly-slider" id="hourlyForecastContainer">
-            <!-- Dynamically populated via JS -->
             <div class="loading-state">Memuat prakiraan per jam...</div>
           </div>
-        </section>
+        </div>
+      </section>
 
+      <!-- BOTTOM ROW: 7-Day Forecast, Sun Info & API Endpoint Box -->
+      <section class="bottom-forecast-row">
         <!-- 7-Day Forecast Section -->
-        <section class="card glass-card daily-section">
+        <div class="card glass-card daily-section">
           <div class="section-title-sm">
             <i class="fa-regular fa-calendar-days"></i>
             <h3>Prakiraan 7 Hari Ke Depan</h3>
           </div>
           <div class="daily-list" id="dailyForecastContainer">
-            <!-- Dynamically populated via JS -->
             <div class="loading-state">Memuat prakiraan 7 hari...</div>
           </div>
-        </section>
-      </div>
+        </div>
 
-      <!-- Right Column: Interactive Map & Live Geolocation Control -->
-      <div class="right-column">
-        <!-- Interactive Map Container -->
-        <section class="card glass-card map-card">
-          <div class="map-card-header">
-            <div class="card-title-group">
-              <div class="icon-bubble">
-                <i class="fa-solid fa-layer-group"></i>
+        <div class="bottom-sidebar">
+          <!-- Sun Trajectory & Day Info Card -->
+          <div class="card glass-card sun-info-card">
+            <div class="section-title-sm">
+              <i class="fa-solid fa-sun"></i>
+              <h3>Siklus Matahari & Waktu</h3>
+            </div>
+            <div class="sun-cycle-container">
+              <div class="sun-item">
+                <i class="fa-solid fa-mountain-sun sunrise-icon"></i>
+                <div>
+                  <span class="sun-label">Matahari Terbit</span>
+                  <span class="sun-time" id="sunSunrise">--:-- WIB</span>
+                </div>
               </div>
-              <div>
-                <h3>Peta Interaktif MapTiler</h3>
-                <p class="card-desc">Klik di mana saja pada peta untuk reverse-geocoding</p>
+              <div class="sun-divider">
+                <div class="sun-arc-line"></div>
               </div>
-            </div>
-            <div class="map-layer-selector">
-              <select id="mapStyleSelect" class="select-glass" title="Pilih gaya peta">
-                <option value="streets-v2">Streets MapTiler</option>
-                <option value="satellite">Satelit MapTiler</option>
-                <option value="topo-v2">Topografi MapTiler</option>
-                <option value="backdrop">Dark / Night</option>
-                <option value="osm">OpenStreetMap</option>
-              </select>
-            </div>
-          </div>
-
-          <div id="map" class="interactive-map"></div>
-
-          <div class="map-footer-info">
-            <span><i class="fa-solid fa-hand-pointer"></i> <strong>Tip:</strong> Geser peta atau klik pin lokasi untuk memperbarui cuaca secara real-time.</span>
-          </div>
-        </section>
-
-        <!-- Sun Trajectory & Day Info Card -->
-        <section class="card glass-card sun-info-card">
-          <div class="section-title-sm">
-            <i class="fa-solid fa-sun"></i>
-            <h3>Siklus Matahari & Waktu</h3>
-          </div>
-          <div class="sun-cycle-container">
-            <div class="sun-item">
-              <i class="fa-solid fa-mountain-sun sunrise-icon"></i>
-              <div>
-                <span class="sun-label">Matahari Terbit</span>
-                <span class="sun-time" id="sunSunrise">--:-- WIB</span>
-              </div>
-            </div>
-            <div class="sun-divider">
-              <div class="sun-arc-line"></div>
-            </div>
-            <div class="sun-item">
-              <i class="fa-solid fa-sunset sunset-icon"></i>
-              <div>
-                <span class="sun-label">Matahari Terbenam</span>
-                <span class="sun-time" id="sunSunset">--:-- WIB</span>
+              <div class="sun-item">
+                <i class="fa-solid fa-sunset sunset-icon"></i>
+                <div>
+                  <span class="sun-label">Matahari Terbenam</span>
+                  <span class="sun-time" id="sunSunset">--:-- WIB</span>
+                </div>
               </div>
             </div>
           </div>
-        </section>
 
-        <!-- API Request Info Box (Postman & Grading Helper) -->
-        <section class="card glass-card api-helper-card">
-          <div class="section-title-sm">
-            <i class="fa-solid fa-code"></i>
-            <h3>Endpoint MapTiler API Aktif</h3>
+          <!-- API Request Info Box (Postman & Grading Helper) -->
+          <div class="card glass-card api-helper-card">
+            <div class="section-title-sm">
+              <i class="fa-solid fa-code"></i>
+              <h3>Endpoint MapTiler API Aktif</h3>
+            </div>
+            <div class="endpoint-box">
+              <span class="method-tag">GET</span>
+              <code id="activeEndpointUrl" class="endpoint-url">https://api.maptiler.com/geocoding/...</code>
+            </div>
+            <div class="api-helper-actions">
+              <button class="btn-sm-glass" onclick="openInspectorModal()">
+                <i class="fa-solid fa-terminal"></i> Raw JSON Inspector
+              </button>
+              <button class="btn-sm-glass" onclick="copyActiveEndpoint()">
+                <i class="fa-regular fa-copy"></i> Salin URL Postman
+              </button>
+            </div>
           </div>
-          <div class="endpoint-box">
-            <span class="method-tag">GET</span>
-            <code id="activeEndpointUrl" class="endpoint-url">https://api.maptiler.com/geocoding/...</code>
-          </div>
-          <div class="api-helper-actions">
-            <button class="btn-sm-glass" onclick="openInspectorModal()">
-              <i class="fa-solid fa-terminal"></i> Buka Raw JSON Inspector
-            </button>
-            <button class="btn-sm-glass" onclick="copyActiveEndpoint()">
-              <i class="fa-regular fa-copy"></i> Salin URL untuk Postman
-            </button>
-          </div>
-        </section>
-      </div>
+        </div>
+      </section>
     </main>
 
     <!-- Footer -->

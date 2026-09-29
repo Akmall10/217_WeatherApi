@@ -175,15 +175,25 @@ function updateMapTileLayer(styleKey) {
     }
     attribution = '&copy; <a href="https://www.maptiler.com/copyright/" target="_blank">MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
   } else {
-    // OpenStreetMap default / fallback
-    tileUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-    attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+    // High-performance OpenStreetMap / CartoDB Voyager tiles
+    if (styleKey === 'backdrop') {
+      tileUrl = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png';
+      attribution = '&copy; <a href="https://carto.com/">CARTO</a>';
+    } else {
+      tileUrl = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+      attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+    }
   }
 
   state.currentTileLayer = L.tileLayer(tileUrl, {
     maxZoom: 19,
+    subdomains: ['a', 'b', 'c', 'd'],
     attribution: attribution
   }).addTo(state.map);
+
+  setTimeout(() => {
+    if (state.map) state.map.invalidateSize();
+  }, 200);
 }
 
 /**
@@ -638,6 +648,9 @@ function processGeocodingResult(geo) {
         <span style="font-size:0.8em; color:#cbd5e1;">Lat: ${geo.latitude.toFixed(4)}, Lon: ${geo.longitude.toFixed(4)}</span>
       </div>
     `).openPopup();
+    setTimeout(() => {
+      if (state.map) state.map.invalidateSize();
+    }, 150);
   }
 
   // Fetch Live Weather Forecast for coordinates

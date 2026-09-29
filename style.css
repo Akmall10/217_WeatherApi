@@ -487,16 +487,49 @@ body {
 }
 
 /* ==========================================================================
-   Main Grid Layout
+   Dashboard Main Layout (Structured Rows)
    ========================================================================== */
-.main-grid {
+.dashboard-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Row 1: 6 Required Data Fields (Left) & Interactive Map (Right) */
+.top-geo-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.top-geo-row .map-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.top-geo-row .interactive-map {
+  flex: 1;
+  min-height: 360px;
+}
+
+/* Row 2: Live Weather Hero & Hourly Forecast */
+.middle-weather-row {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+/* Row 3: 7-Day Forecast & Sidebar */
+.bottom-forecast-row {
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
   gap: 24px;
   align-items: start;
 }
 
-.left-column, .right-column {
+.bottom-sidebar {
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -1471,7 +1504,9 @@ body {
    Responsive Breakpoints
    ========================================================================== */
 @media (max-width: 1024px) {
-  .main-grid {
+  .top-geo-row,
+  .middle-weather-row,
+  .bottom-forecast-row {
     grid-template-columns: 1fr;
   }
 }
